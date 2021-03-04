@@ -1,4 +1,4 @@
-package com.algorithm.prac.controller;
+package com.algorithm.prac.programmers.controller;
 
 import java.util.Arrays;
 
