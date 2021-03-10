@@ -110,6 +110,7 @@ public class MenuRenewal {
             int endPoint = course[i];
 
             for (String menu : newOrders) {
+                System.out.println("menu : " + menu);
 
             }
 
