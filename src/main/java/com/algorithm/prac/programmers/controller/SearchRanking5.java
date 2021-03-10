@@ -104,95 +104,19 @@ import java.util.*;
  * <p>
  * "- and - and - and - 150"
  * : 코딩테스트 점수를 150점 이상 받은 지원자는 4명 입니다.
+ *
+ *
+ *
+ * https://private-space.tistory.com/117?category=748355
+ * https://void2017.tistory.com/220
  **/
-public class SearchRanking {
+public class SearchRanking5 {
 
-    public static ArrayList<ArrayList<String>> queryList = new ArrayList<>();
-    public static ArrayList<ArrayList<String>> infoList = new ArrayList<>();
-    public static int[] checkFlag;
+   public static int[] solution(String[] info, String[] query) {
 
-    public static int[] solution(String[] info, String[] query) {
-
-        System.out.println("==// solution");
-
-        int[] answer = new int[query.length];
+       int[] answer = new int[query.length];
 
 
-
-        for (int i = 0; i < query.length; i++) {
-            String[] infoTmp = info[i].split(" ");
-            String[] queryTmp = query[i].replace("and ", "").split(" ");
-
-            // Query List
-            ArrayList<String> listQ = new ArrayList<>();
-            for (int j = 0; j < queryTmp.length; j++) {
-                listQ.add(queryTmp[j]);
-            }
-            queryList.add(listQ);
-
-            // Info List
-            ArrayList<String> listI = new ArrayList<>();
-            for (int j = 0; j < infoTmp.length; j++) {
-                listI.add(infoTmp[j]);
-            }
-            infoList.add(listI);
-        }
-
-        System.out.println("\n===================//");
-        for (ArrayList<String> value : queryList) System.out.println("==// queryList : " + value);
-
-        System.out.println("\n===================//");
-        for (ArrayList<String> value : infoList) System.out.println("==// infoList : " + value);
-        System.out.println();
-
-
-
-        checkFlag = new int[infoList.size()];
-        // compare
-        for (ArrayList<String> queryValue : queryList) {
-
-            System.out.println("\n1. ==// query : " + queryValue);
-            int checkCnt = 0;
-            for (int i = 0; i < queryValue.size(); i++) {
-
-                String key = queryValue.get(i);
-                System.out.println("\n2. [" + i + "] key : " + key);
-
-                for (ArrayList<String> infoValue : infoList) {
-
-                    System.out.println("==// infoList" + infoValue);
-
-                    for (int j = 0; j < infoValue.size(); j++) {
-
-                        if (i != 4) {
-
-                            if (i == j) {
-                                if (key.equals(infoValue.get(j))) {
-                                    System.out.println(checkCnt + ") => " + infoValue.get(j));
-                                    checkFlag[checkCnt]++;
-                                } else {
-                                    checkFlag[checkCnt]--;
-                                }
-                                checkCnt++;
-                            }
-
-                        } else {
-
-                            System.out.println(checkFlag.length);
-                            for (int val : checkFlag) {
-                                System.out.println("val : " + val);
-                            }
-
-
-                        }
-
-
-                    }
-                }
-                checkCnt = 0;
-            }
-
-        }
 
 
 
@@ -201,46 +125,8 @@ public class SearchRanking {
     }
 
 
-    //    https://void2017.tistory.com/220
-    public static HashMap<String, ArrayList<Integer>> hashMap = new HashMap<>();
-    public static boolean[] flag;
-
-    public static void comb(int cnt, String sb, String tmp[], int idx) {
-
-        if (cnt == 4) {
-//            List<Integer> list =
-        }
-
-        System.out.println("sb : " + sb);
-
-        for (int i = 0; i < tmp.length - 1; i++) {
-            if (!flag[i]) {
-                flag[i] = true;
-                comb(cnt++, sb + tmp[i], tmp, i);
-                comb(cnt++, sb + "-", tmp, i);
-                flag[i] = false;
-            }
-        }
 
 
-    }
-
-    public static int[] solution2(String[] info, String[] query) {
-
-        System.out.println("==// solution2");
-
-        int[] answer = new int[query.length];
-
-
-        for (int i = 0; i < info.length; i++) {
-            String[] infoArray = info[i].split(" ");
-            flag = new boolean[infoArray.length];
-            comb(0, "", infoArray, 0);
-        }
-
-
-        return answer;
-    }
 
 
     public static void main(String[] args) {

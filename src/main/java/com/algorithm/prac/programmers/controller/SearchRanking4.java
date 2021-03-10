@@ -104,143 +104,100 @@ import java.util.*;
  * <p>
  * "- and - and - and - 150"
  * : 코딩테스트 점수를 150점 이상 받은 지원자는 4명 입니다.
+ *
+ *
+ *
+ * https://private-space.tistory.com/117?category=748355
+ * https://void2017.tistory.com/220
  **/
-public class SearchRanking {
-
-    public static ArrayList<ArrayList<String>> queryList = new ArrayList<>();
-    public static ArrayList<ArrayList<String>> infoList = new ArrayList<>();
-    public static int[] checkFlag;
-
-    public static int[] solution(String[] info, String[] query) {
-
-        System.out.println("==// solution");
-
-        int[] answer = new int[query.length];
+public class SearchRanking4 {
 
 
+    public static HashMap<String, List<Integer>> map;
+    public static boolean vtd[];
 
-        for (int i = 0; i < query.length; i++) {
-            String[] infoTmp = info[i].split(" ");
-            String[] queryTmp = query[i].replace("and ", "").split(" ");
+    public static void comb(int cnt, String sb, String tmp[], int idx) { // 모든 경우의 수 다 map에 put
 
-            // Query List
-            ArrayList<String> listQ = new ArrayList<>();
-            for (int j = 0; j < queryTmp.length; j++) {
-                listQ.add(queryTmp[j]);
-            }
-            queryList.add(listQ);
+//        System.out.println("==================// comb");
+//        System.out.println("cnt : " + cnt);
+//        System.out.println("sb : " + sb);
+//        System.out.println("idx : " + idx);
+//        for (String value : tmp) System.out.println("tmp value : " + value);
 
-            // Info List
-            ArrayList<String> listI = new ArrayList<>();
-            for (int j = 0; j < infoTmp.length; j++) {
-                listI.add(infoTmp[j]);
-            }
-            infoList.add(listI);
-        }
-
-        System.out.println("\n===================//");
-        for (ArrayList<String> value : queryList) System.out.println("==// queryList : " + value);
-
-        System.out.println("\n===================//");
-        for (ArrayList<String> value : infoList) System.out.println("==// infoList : " + value);
-        System.out.println();
-
-
-
-        checkFlag = new int[infoList.size()];
-        // compare
-        for (ArrayList<String> queryValue : queryList) {
-
-            System.out.println("\n1. ==// query : " + queryValue);
-            int checkCnt = 0;
-            for (int i = 0; i < queryValue.size(); i++) {
-
-                String key = queryValue.get(i);
-                System.out.println("\n2. [" + i + "] key : " + key);
-
-                for (ArrayList<String> infoValue : infoList) {
-
-                    System.out.println("==// infoList" + infoValue);
-
-                    for (int j = 0; j < infoValue.size(); j++) {
-
-                        if (i != 4) {
-
-                            if (i == j) {
-                                if (key.equals(infoValue.get(j))) {
-                                    System.out.println(checkCnt + ") => " + infoValue.get(j));
-                                    checkFlag[checkCnt]++;
-                                } else {
-                                    checkFlag[checkCnt]--;
-                                }
-                                checkCnt++;
-                            }
-
-                        } else {
-
-                            System.out.println(checkFlag.length);
-                            for (int val : checkFlag) {
-                                System.out.println("val : " + val);
-                            }
-
-
-                        }
-
-
-                    }
-                }
-                checkCnt = 0;
-            }
-
-        }
-
-
-
-
-        return answer;
-    }
-
-
-    //    https://void2017.tistory.com/220
-    public static HashMap<String, ArrayList<Integer>> hashMap = new HashMap<>();
-    public static boolean[] flag;
-
-    public static void comb(int cnt, String sb, String tmp[], int idx) {
 
         if (cnt == 4) {
-//            List<Integer> list =
+            List<Integer> t = new ArrayList<>();
+            if (map.containsKey(sb)) {
+                if (map.get(sb) != null) {
+                    t = map.get(sb);
+                }
+            }
+            t.add(Integer.parseInt(tmp[tmp.length - 1]));
+            map.put(sb, t);
+            return;
+        }
+//            System.out.println("map.toString() : " + map.toString());
+
+        for (int i = idx; i < tmp.length - 1; i++) {
+            if (!vtd[i]) {
+                vtd[i] = true;
+                comb(cnt + 1, sb + tmp[i], tmp, i);
+                comb(cnt + 1, sb + "-", tmp, i);
+                vtd[i] = false;
+            }
+        }
+    }
+
+    public static int[] solution(String[] info, String[] query) {
+        map = new HashMap<>();
+        int[] answer = new int[query.length];
+
+        for (int i = 0; i < info.length; i++) {
+            String splitArray[] = info[i].split(" ");
+            vtd = new boolean[splitArray.length];
+            comb(0, "", splitArray, 0); // comb
         }
 
-        System.out.println("sb : " + sb);
+        // map value 오름차순으로 정렬
+        Iterator<String> iter = map.keySet().iterator();
+        while(iter.hasNext()) {
+            String key = iter.next();
+//            System.out.println("key : " + key);
 
-        for (int i = 0; i < tmp.length - 1; i++) {
-            if (!flag[i]) {
-                flag[i] = true;
-                comb(cnt++, sb + tmp[i], tmp, i);
-                comb(cnt++, sb + "-", tmp, i);
-                flag[i] = false;
+            List<Integer> list = map.get(key);
+//            for (int value : list) System.out.println("list : " + value);
+            Collections.sort(list);
+//            System.out.println("==============//");
+        }
+
+        for (int i = 0; i < query.length; i++) {
+            String tmp[] = query[i].split(" ");
+            String str = tmp[0] + tmp[2] + tmp[4] + tmp[6]; // 비교해야할 string
+            int score = Integer.parseInt(tmp[7]); // 찾아야할 점수
+
+            if (map.containsKey(str)) { // 포함되어 있는 경우
+                List<Integer> nums = map.get(str); // map에서 str을 갖고 있는 경우, 점수들 list
+                int start = 0;
+                int end = nums.size() - 1;
+                while(start <= end) { // 시간초과 때문에 이분탐색으로 체크
+                    int mid = (start + end) / 2;
+                    if(nums.get(mid) < score) start = mid + 1;
+                    else end = mid - 1;
+                }
+                answer[i] = nums.size() - start; // start index부터가 X점수 이상이므로, 그 index ~ size 까지가 갯수
             }
         }
 
-
-    }
-
-    public static int[] solution2(String[] info, String[] query) {
-
-        System.out.println("==// solution2");
-
-        int[] answer = new int[query.length];
-
-
-        for (int i = 0; i < info.length; i++) {
-            String[] infoArray = info[i].split(" ");
-            flag = new boolean[infoArray.length];
-            comb(0, "", infoArray, 0);
-        }
-
+//        for (int value : answer) System.out.println("value answer : " + value);
+        System.out.println("map.toString() : " + map.size());
+        System.out.println("map.toString() : " + map.toString());
 
         return answer;
     }
+
+
+
+
 
 
     public static void main(String[] args) {

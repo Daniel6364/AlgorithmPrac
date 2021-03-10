@@ -1,6 +1,9 @@
 package com.algorithm.prac.programmers.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author : daniel
@@ -104,96 +107,160 @@ import java.util.*;
  * <p>
  * "- and - and - and - 150"
  * : 코딩테스트 점수를 150점 이상 받은 지원자는 4명 입니다.
+ *
+ *
+ *
+ * https://private-space.tistory.com/117?category=748355
+ * https://void2017.tistory.com/220
  **/
-public class SearchRanking {
+public class SearchRanking2 {
 
-    public static ArrayList<ArrayList<String>> queryList = new ArrayList<>();
-    public static ArrayList<ArrayList<String>> infoList = new ArrayList<>();
-    public static int[] checkFlag;
+    public static ArrayList<ArrayList<String>> getTransform(String[] arrList) {
+
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+
+        for (String value : arrList) {
+
+            ArrayList<String> tmpList = new ArrayList<>();
+            if (value.contains("and")) {
+                String keyStr = value.replace("and ", "");
+                String[] tmpArr = keyStr.split(" ");
+                for (String str : tmpArr) {
+                    tmpList.add(str);
+                }
+            } else {
+                String[] tmpArr = value.split(" ");
+                for (String str : tmpArr) {
+                    tmpList.add(str);
+                }
+            }
+            result.add(tmpList);
+        }
+        return result;
+    }
+
+    public static ArrayList<HashMap<String, Integer>> getMap(ArrayList<ArrayList<String>> arrList) {
+
+        ArrayList<HashMap<String, Integer>> result = new ArrayList<>();
+
+        String[] aType = {"cpp", "java", "python"}; // 언어
+        String[] bType = {"backend", "frontend"}; // 직군
+        String[] cType = {"junior", "senior"}; // 경력
+        String[] dType = {"chicken", "pizza"}; // 음식
+
+        // validation check
+        String keyStr = "";
+        for (ArrayList<String> list : arrList) {
+
+            HashMap<String, Integer> tmpMap = new HashMap<>();
+            for (int i = 0; i < list.size() - 1; i++) {
+
+                if (list.get(i).equals("-")) {
+                    keyStr += "x";
+                }
+
+                // 언어 체크
+                for (int j = 0; j < aType.length; j++) {
+                    if (aType[j].equals(list.get(i))) {
+                        keyStr += j;
+                    }
+                }
+
+                // 직군 체크
+                for (int j = 0; j < bType.length; j++) {
+                    if (bType[j].equals(list.get(i))) {
+                        keyStr += j;
+                    }
+                }
+
+                // 경력 체크
+                for (int j = 0; j < cType.length; j++) {
+                    if (cType[j].equals(list.get(i))) {
+                        keyStr += j;
+                    }
+                }
+
+                // 음식 체크
+                for (int j = 0; j < dType.length; j++) {
+                    if (dType[j].equals(list.get(i))) {
+                        keyStr += j;
+                    }
+                }
+
+
+            }
+            tmpMap.put(keyStr, Integer.parseInt(list.get(list.size() - 1)));
+//            System.out.println("map : " + tmpMap.toString());
+            result.add(tmpMap);
+            keyStr = "";
+
+        }
+
+
+
+        return result;
+    }
 
     public static int[] solution(String[] info, String[] query) {
 
         System.out.println("==// solution");
-
         int[] answer = new int[query.length];
 
+        // ========================== List 정렬
+        System.out.println("\n===========================// queryList");
+        ArrayList<ArrayList<String>> queryList = getTransform(query);
+//        for (ArrayList<String> value : queryList) System.out.println(value);
 
+        System.out.println("\n===========================// infoList");
+        ArrayList<ArrayList<String>> infoList = getTransform(info);
+//        for (ArrayList<String> value : infoList) System.out.println(value);
 
-        for (int i = 0; i < query.length; i++) {
-            String[] infoTmp = info[i].split(" ");
-            String[] queryTmp = query[i].replace("and ", "").split(" ");
+        // ========================== key value 로 변경
+        System.out.println("\n===========================// queryMap");
+        ArrayList<HashMap<String, Integer>> queryMap = getMap(queryList);
+//        for (HashMap<String, Integer> value : queryMap) System.out.println(value);
 
-            // Query List
-            ArrayList<String> listQ = new ArrayList<>();
-            for (int j = 0; j < queryTmp.length; j++) {
-                listQ.add(queryTmp[j]);
-            }
-            queryList.add(listQ);
+        System.out.println("\n===========================// infoMap");
+        ArrayList<HashMap<String, Integer>> infoMap = getMap(infoList);
+//        for (HashMap<String, Integer> value : infoMap) System.out.println(value);
 
-            // Info List
-            ArrayList<String> listI = new ArrayList<>();
-            for (int j = 0; j < infoTmp.length; j++) {
-                listI.add(infoTmp[j]);
-            }
-            infoList.add(listI);
+        // ========================== key setting
+        System.out.println("\n====================// [queryKeys]");
+        ArrayList<String> queryKeys = new ArrayList<>();
+        for (int i = 0; i < queryMap.size(); i++) {
+            String tmpKey = queryMap.get(i).keySet().toString().substring(1, 5);
+            queryKeys.add(tmpKey);
         }
+//        for (String key : queryKeys) System.out.println("queryKeys : " + key);
 
-        System.out.println("\n===================//");
-        for (ArrayList<String> value : queryList) System.out.println("==// queryList : " + value);
+        System.out.println("\n====================// [infoKeys]");
+        ArrayList<String> infoKeys = new ArrayList<>();
+        for (int i = 0; i < infoMap.size(); i++) {
+            String tmpKey = infoMap.get(i).keySet().toString().substring(1, 5);
+            infoKeys.add(tmpKey);
+        }
+//        for (String key : infoKeys) System.out.println("infoKeys : " + key);
 
-        System.out.println("\n===================//");
-        for (ArrayList<String> value : infoList) System.out.println("==// infoList : " + value);
-        System.out.println();
+        System.out.println("\n====================// [compare]");
 
-
-
-        checkFlag = new int[infoList.size()];
-        // compare
-        for (ArrayList<String> queryValue : queryList) {
-
-            System.out.println("\n1. ==// query : " + queryValue);
-            int checkCnt = 0;
-            for (int i = 0; i < queryValue.size(); i++) {
-
-                String key = queryValue.get(i);
-                System.out.println("\n2. [" + i + "] key : " + key);
-
-                for (ArrayList<String> infoValue : infoList) {
-
-                    System.out.println("==// infoList" + infoValue);
-
-                    for (int j = 0; j < infoValue.size(); j++) {
-
-                        if (i != 4) {
-
-                            if (i == j) {
-                                if (key.equals(infoValue.get(j))) {
-                                    System.out.println(checkCnt + ") => " + infoValue.get(j));
-                                    checkFlag[checkCnt]++;
-                                } else {
-                                    checkFlag[checkCnt]--;
-                                }
-                                checkCnt++;
-                            }
-
-                        } else {
-
-                            System.out.println(checkFlag.length);
-                            for (int val : checkFlag) {
-                                System.out.println("val : " + val);
-                            }
+        for (String queryKey : queryKeys) {
+            System.out.println("=====// 1. queryKey : " + queryKey);
+//            System.out.println("=====// 2. queryKey : " + queryKey.contains("x"));
+//            System.out.println("==========// 3. queryKey : " + queryKey.indexOf("x"));
 
 
-                        }
+            for (String infoKey : infoKeys) {
+                System.out.println("infoKey : " + infoKey);
+//                System.out.println("queryKey.compareTo(infoKey) : " + queryKey.compareTo(infoKey));
+//                queryKey.contains('x')
+                for (int i = 0; i < infoKey.length(); i++) {
 
-
-                    }
                 }
-                checkCnt = 0;
+
+
             }
 
         }
-
 
 
 
@@ -201,46 +268,7 @@ public class SearchRanking {
     }
 
 
-    //    https://void2017.tistory.com/220
-    public static HashMap<String, ArrayList<Integer>> hashMap = new HashMap<>();
-    public static boolean[] flag;
 
-    public static void comb(int cnt, String sb, String tmp[], int idx) {
-
-        if (cnt == 4) {
-//            List<Integer> list =
-        }
-
-        System.out.println("sb : " + sb);
-
-        for (int i = 0; i < tmp.length - 1; i++) {
-            if (!flag[i]) {
-                flag[i] = true;
-                comb(cnt++, sb + tmp[i], tmp, i);
-                comb(cnt++, sb + "-", tmp, i);
-                flag[i] = false;
-            }
-        }
-
-
-    }
-
-    public static int[] solution2(String[] info, String[] query) {
-
-        System.out.println("==// solution2");
-
-        int[] answer = new int[query.length];
-
-
-        for (int i = 0; i < info.length; i++) {
-            String[] infoArray = info[i].split(" ");
-            flag = new boolean[infoArray.length];
-            comb(0, "", infoArray, 0);
-        }
-
-
-        return answer;
-    }
 
 
     public static void main(String[] args) {
