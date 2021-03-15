@@ -1,6 +1,6 @@
 package com.algorithm.prac.programmers.controller;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * @package : com.algorithm.prac.programmers.controller
@@ -82,6 +82,8 @@ import java.util.Arrays;
  **/
 public class MenuRenewal {
 
+    public static List<String> list = new ArrayList<>();
+
     public static String[] reformArray(String[] tmpArr) {
 
         String[] result = new String[tmpArr.length];
@@ -94,29 +96,57 @@ public class MenuRenewal {
         return result;
     }
 
+    public static void checkValue(int endCnt, String[] newOrders) {
+
+        Map<String, Integer> result = new HashMap<>();
+
+        for (int i = 0; i < newOrders.length; i++) {
+            for (int j = 0; j < newOrders[i].length(); j++) {
+                if ((j + endCnt) <= newOrders[i].length()) {
+
+                    String key = newOrders[i].substring(j, j + endCnt).toString();
+                    System.out.println("key : " + key);
+
+                    if (result.get(key) != null) {
+                        result.put(key, result.get(key) + 1);
+                    } else {
+                        result.put(key, 1);
+                    }
+
+                }
+            }
+        }
+
+        System.out.println("result.entrySet() : " + result.entrySet());
+
+        for (Map.Entry<String, Integer> map : result.entrySet()) {
+            String key = map.getKey();
+            int value = map.getValue();
+            if (value > 1) {
+                list.add(key);
+            }
+        }
+
+    }
 
     public static String[] solution(String[] orders, int[] course) {
 
-        /*1. order 정렬
-        * 2. course 에서 제새한 게수만큰의 orders 재조합
-        * */
+//        String[] newOrders = reformArray(orders);
 
-        String[] newOrders = reformArray(orders);
-//        for (String val : newOrders) System.out.println("newOrders : " + val);
-
-        //2,3,4
         for (int i = 0; i < course.length; i++) {
-            System.out.println(course[i]);
-            int endPoint = course[i];
-
-            for (String menu : newOrders) {
-                System.out.println("menu : " + menu);
-
-            }
+            int endCnt = course[i];
+//            checkValue(endCnt, newOrders);
+            checkValue(endCnt, orders);
 
         }
 
-        String[] answer = {};
+        String[] answer = new String[list.size()];
+        for (int i = 0; i < answer.length; i++) {
+            answer[i] = list.get(i);
+        }
+        Arrays.sort(answer);
+        for (String val : answer) System.out.println("val2 : " + val);
+
         return answer;
     }
 
