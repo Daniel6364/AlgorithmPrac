@@ -1,5 +1,9 @@
 package com.algorithm.prac.programmers.controller.third;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Daniel
  * @project_name AlgorithmPrac
@@ -99,14 +103,21 @@ package com.algorithm.prac.programmers.controller.third;
  */
 public class FaultyUser {
 
+    private static Set<String> set = new HashSet<>();
+
     public static void compare(String bannedId, String userId) {
 
-        System.out.println("ban : " + bannedId + " / userId : " + userId);
-
+        String tmpId = "";
         for (int i = 0; i < bannedId.length(); i++) {
+            if (bannedId.charAt(i) == '*') {
+                tmpId += "*";
+            } else {
+                tmpId += userId.charAt(i);
+            }
+        }
 
-
-
+        if (tmpId.equals(bannedId)) {
+            set.add(tmpId);
         }
 
     }
@@ -114,19 +125,17 @@ public class FaultyUser {
 
     public static int solution(String[] user_id, String[] banned_id) {
 
-        for (String s1 : banned_id) {
-            System.out.println("s1 : " + s1);
-
-            for (String s2 : user_id) {
-
-                if (s1.length() == s2.length()) compare(s1, s2);
-
+        for (String bannedId : banned_id) {
+            for (String userId : user_id) {
+                if (bannedId.length() == userId.length()) compare(bannedId, userId);
             }
         }
 
 
+        int answer = set.size();
 
-        int answer = 0;
+
+        System.out.println("answer : " + answer);
         return answer;
     }
 
@@ -134,8 +143,10 @@ public class FaultyUser {
     public static void main(String[] args) {
 
         String[] user_id = {"frodo", "fradi", "crodo", "abc123", "frodoc"};
+
 //        String[] banned_id = {"*rodo", "*rodo", "******"};
-        String[] banned_id = {"fr*d*", "abc1**"};
+        String[] banned_id = {"fr*d*", "*rodo", "******", "******"};
+//        String[] banned_id = {"fr*d*", "abc1**"};
 
         solution(user_id, banned_id);
 
