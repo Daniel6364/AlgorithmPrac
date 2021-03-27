@@ -62,90 +62,55 @@ import java.util.*;
  * [입출력 예]
  * orders	                                            course	result
  * ["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"]	    [2,3,4]	["AC", "ACDE", "BCFG", "CDE"]
- * ["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"]	[2,3,5]	["ACD", "AD", "ADE", "CD", "XYZ"]
- * ["XYZ", "XWY", "WXA"]	                            [2,3,4]	["WX", "XY"]
  *
- * [입출력 예에 대한 설명]
+ * ["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"]	[2,3,5]	["ACD", "AD", "ADE", "CD", "XYZ"]
+ *
+ * ["XYZ", "XWY", "WXA"]	                            [2,3,4]	["WX", "XY"]
+ * 입출력 예에 대한 설명
  * 입출력 예 #1
  * 문제의 예시와 같습니다.
  *
  * 입출력 예 #2
  * AD가 세 번, CD가 세 번, ACD가 두 번, ADE가 두 번, XYZ 가 두 번 주문됐습니다.
- * 요리 5개를 주문한 손님이 1명 있지만, 최소 2명 이상의 손님에게서 주문된 구성만 코스요리 후보에 들어가므로, 요리 5개로 구성된 코스요리는 새로 추가하지 않습니다.
+ * 요리 5개를 주문한 손님이 1명 있지만, 최소 2명 이상의 손님에게서 주문된 구성만 코스요리 후보에 들어가므로,
+ * 요리 5개로 구성된 코스요리는 새로 추가하지 않습니다.
  *
  * 입출력 예 #3
  * WX가 두 번, XY가 두 번 주문됐습니다.
  * 3명의 손님 모두 단품메뉴를 3개씩 주문했지만, 최소 2명 이상의 손님에게서 주문된 구성만 코스요리 후보에 들어가므로,
  * 요리 3개로 구성된 코스요리는 새로 추가하지 않습니다.
  * 또, 단품메뉴를 4개 이상 주문한 손님은 없으므로, 요리 4개로 구성된 코스요리 또한 새로 추가하지 않습니다.
- *
  **/
 public class MenuRenewal {
 
     public static List<String> list = new ArrayList<>();
 
-    public static String[] reformArray(String[] tmpArr) {
 
-        String[] result = new String[tmpArr.length];
-        for (int i = 0; i < tmpArr.length; i++) {
-            char[] tmpChar = tmpArr[i].toCharArray();
-            Arrays.sort(tmpChar);
-            result[i] = new String(tmpChar);
-        }
+    public static void reOrders(char[] charOrders, char str, int course) {
 
-        return result;
-    }
+        for (int i = 0; i < charOrders.length; i++) {
+            System.out.println("charOrders[i] : " + charOrders[i] + " / str : " + str);
 
-    public static void checkValue(int endCnt, String[] newOrders) {
-
-        Map<String, Integer> result = new HashMap<>();
-
-        for (int i = 0; i < newOrders.length; i++) {
-            for (int j = 0; j < newOrders[i].length(); j++) {
-                if ((j + endCnt) <= newOrders[i].length()) {
-
-                    String key = newOrders[i].substring(j, j + endCnt).toString();
-                    System.out.println("key : " + key);
-
-                    if (result.get(key) != null) {
-                        result.put(key, result.get(key) + 1);
-                    } else {
-                        result.put(key, 1);
-                    }
-
-                }
-            }
-        }
-
-        System.out.println("result.entrySet() : " + result.entrySet());
-
-        for (Map.Entry<String, Integer> map : result.entrySet()) {
-            String key = map.getKey();
-            int value = map.getValue();
-            if (value > 1) {
-                list.add(key);
-            }
         }
 
     }
+
 
     public static String[] solution(String[] orders, int[] course) {
 
-//        String[] newOrders = reformArray(orders);
+        for (String menu : orders) {
+            System.out.println("==// menu : " + menu);
 
-        for (int i = 0; i < course.length; i++) {
-            int endCnt = course[i];
-//            checkValue(endCnt, newOrders);
-            checkValue(endCnt, orders);
+            char[] charMenu = menu.toCharArray();
+            Arrays.sort(charMenu);
+
+//            for (char charStr :
+//            }
+
 
         }
 
-        String[] answer = new String[list.size()];
-        for (int i = 0; i < answer.length; i++) {
-            answer[i] = list.get(i);
-        }
-        Arrays.sort(answer);
-        for (String val : answer) System.out.println("val2 : " + val);
+        String[] answer = {};
 
         return answer;
     }
@@ -154,6 +119,7 @@ public class MenuRenewal {
 
 //        String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
         String[] orders = {"XYZ", "XWY", "WXA"};
+//        String[] orders = {"XYZ"};
         int[] course = {2,3,4};
         solution(orders, course);
     }
