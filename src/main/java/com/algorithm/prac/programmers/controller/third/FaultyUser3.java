@@ -1,7 +1,8 @@
 package com.algorithm.prac.programmers.controller.third;
 
-import java.util.*;
-import java.util.regex.Pattern;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Daniel
@@ -81,7 +82,7 @@ import java.util.regex.Pattern;
  * crodo
  * frodoc
  * <p>
- *
+ * <p>
  * 입출력 예 #3
  * 다음과 같이 세 가지 경우가 있습니다.
  * <p>
@@ -92,31 +93,20 @@ import java.util.regex.Pattern;
  * 제재 아이디
  * fradi frodo abc123 frodoc
  */
-public class FaultyUser {
+public class FaultyUser3 {
 
-    private static int bannedIdSize ;
+    private static Set<Integer> set;
 
-    private static HashSet<HashSet<String>> result = new HashSet<>();
+    private static void dfs(int idx, String[] userId, String[] bannedId, int bit) {
 
-    public static boolean isMatchedId(String bannedId, String userId) {
-        String bannedIdPattern = bannedId.replace("*", ".");
-        return Pattern.matches(bannedIdPattern, userId);
-    }
-
-    private static void dfs(int idx, List<Set<String>> matchedIdList, HashSet<String> userSet) {
-
-        if (userSet.size() == bannedIdSize) {
-            result.add(new HashSet<>(userSet));
+        if (set.size() == bannedId.length) {
+            set.add(bit);
             return;
         }
 
-        for (String matchedId : matchedIdList.get(idx)) {
-            if (!userSet.contains(matchedId)) {
-                userSet.add(matchedId);
-                dfs(idx + 1, matchedIdList, userSet);
-                userSet.remove(matchedId);
-            }
-        }
+        String bannedIdPattern = bannedId[idx].replace("*", "[\\w\\d]");
+        System.out.println("bannedIdPattern : " + bannedIdPattern);
+//        for ()
 
 
     }
@@ -124,31 +114,14 @@ public class FaultyUser {
     public static int solution2(String[] user_id, String[] banned_id) {
 
         int answer = 0;
-        bannedIdSize = banned_id.length;
 
-        List<Set<String>> matchedIdList = new ArrayList<>();
+        set = new HashSet<>();
+        dfs(0, user_id, banned_id, 0);
 
-        for (String bannedId : banned_id) {
-            HashSet<String> userIdSet = new HashSet<>();
-            for (String userId : user_id) {
-                if (isMatchedId(bannedId, userId)) {
-                    userIdSet.add(userId);
-                }
-            }
-            matchedIdList.add(userIdSet);
-        }
-
-
-        int idx = 0;
-        dfs(idx, matchedIdList, new HashSet<>());
-
-        answer = result.size();
-
-
+        answer = set.size();
 
         return answer;
     }
-
 
 
     public static void main(String[] args) {
