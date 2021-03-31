@@ -1,5 +1,9 @@
 package com.algorithm.prac.programmers.controller.first;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
 * @package : com.algorithm.prac.programmers.controller.first
 * @name : FirstSecretMap.java
@@ -53,17 +57,36 @@ public class FirstSecretMap {
     public static String[] solution(int n, int[] arr1, int[] arr2) {
         String[] answer = {};
 
-        String binaryString = Integer.toBinaryString(11);
-        System.out.println("binaryString : " + binaryString);
+        String[] binaryArr1 = new String[arr1.length];
+        int idx = 0;
+        for (int el1 : arr1) {
+            String toBinaryString = Integer.toBinaryString(el1);
+            if (toBinaryString.length() != n) {
+                StringBuilder sharp = new StringBuilder();
+                for (int i = 0; i < n - toBinaryString.length(); i++) {
+                    sharp.append("0");
+                }
+                toBinaryString = sharp + toBinaryString;
+            }
+            binaryArr1[idx] = toBinaryString;
+            idx++;
+//            System.out.println("toBinaryString : " + toBinaryString);
+        }
+
+        System.out.println(Arrays.toString(binaryArr1));
+
 
         return answer;
     }
 
     public static void main(String[] args) {
+
         int n = 5;
         int[] arr1 = {9, 20, 28, 18, 11};
         int[] arr2 = {30, 1, 21, 17, 28};
 
         solution(n, arr1, arr2);
+
+
     }
 }
