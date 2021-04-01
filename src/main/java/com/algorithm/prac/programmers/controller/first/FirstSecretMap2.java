@@ -1,8 +1,6 @@
 package com.algorithm.prac.programmers.controller.first;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
 * @package : com.algorithm.prac.programmers.controller.first
@@ -52,55 +50,31 @@ import java.util.List;
  * arr2	[27 ,56, 19, 14, 14, 10]
  * 출력	["######", "### #", "## ##", " #### ", " #####", "### # "]
 **/
-public class FirstSecretMap {
+public class FirstSecretMap2 {
 
     public static String[] solution(int n, int[] arr1, int[] arr2) {
 
-        String[] answer = new String[arr1.length];
+        String[] answer = new String[n];
 
-        String[] binaryArr1 = new String[arr1.length];
-        String[] binaryArr2 = new String[arr2.length];
+        String[] result = new String[n];
+        for (int i = 0; i < n; i++) {
+            result[i] = Integer.toBinaryString(arr1[i] | arr2[i]);
+        }
+        System.out.println(Arrays.toString(result));
 
-        int idx = 0;
-        for (int i = 0; i < arr1.length; i++) {
+        for (int i = 0; i < n; i++) {
+//            result[i] = String.format("%" + n + "s", result[i]);
+            result[i] = result[i].replaceAll("1", "#");
+//            System.out.println(result[i]);
+            result[i] = result[i].replaceAll("0", " ");
+            System.out.println(result[i]);
 
-            String toBinaryString1 = Integer.toBinaryString(arr1[i]);
-            String toBinaryString2 = Integer.toBinaryString(arr2[i]);
 
-            if (toBinaryString1.length() != n) {
-                StringBuilder zero = new StringBuilder();
-                for (int j = 0; j < n - toBinaryString1.length(); j++) {
-                    zero.append("0");
-                }
-                toBinaryString1 = zero + toBinaryString1;
-            }
-            binaryArr1[idx] = toBinaryString1;
-
-            if (toBinaryString2.length() != n) {
-                StringBuilder zero = new StringBuilder();
-                for (int j = 0; j < n - toBinaryString2.length(); j++) {
-                    zero.append("0");
-                }
-                toBinaryString2 = zero + toBinaryString2;
-            }
-            binaryArr2[idx] = toBinaryString2;
-            idx++;
         }
 
-        String sharpStr = "";
-        for (int i = 0; i < binaryArr1.length; i++) {
-            for (int j = 0; j < binaryArr1[i].length(); j++) {
-                if (binaryArr1[i].charAt(j) == '1' || binaryArr2[i].charAt(j) == '1') {
-                    sharpStr += "#";
-                } else {
-                    sharpStr += " ";
-                }
-            }
-            answer[i] = sharpStr;
-            sharpStr = "";
-        }
 
-        System.out.println(Arrays.toString(answer));
+
+        //System.out.println(Arrays.toString(answer));
         return answer;
     }
 
