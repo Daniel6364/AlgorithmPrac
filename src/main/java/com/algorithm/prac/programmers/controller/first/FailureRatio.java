@@ -1,8 +1,6 @@
 package com.algorithm.prac.programmers.controller.first;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * @author Daniel
@@ -66,21 +64,33 @@ import java.util.Iterator;
  */
 public class FailureRatio {
 
-    public static int[] solution(int N, int[] stages) {
+    public static int[] solution(int n, int[] stages) {
 
-        Arrays.sort(stages);
-        System.out.println(Arrays.toString(stages));
-        HashSet<Integer> set = new HashSet<>();
-        for (int stage : stages) {
-            set.add(stage);
+
+        HashMap<Integer, Double> map = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+
+            int stageLvl = i;
+            int clear = 0;
+            int now = 0;
+
+            for (int stage : stages) {
+                if (i <= stage) {
+                    clear++;
+                }
+                if (i == stage) {
+                    now++;
+                }
+            }
+
+            double failureRate = 0;
+            if (clear != 0) {
+                failureRate = (double) now / clear;
+            }
+            map.put(i, failureRate);
         }
 
-        for (int i = 0; i < stages.length; i++) {
-
-        }
-
-
-
+        System.out.println(map.toString());
 
 
         int[] answer = {};
