@@ -8,7 +8,7 @@ import java.util.Date;
 public class test88 {
 
 
-    @RequestParam
+    // @RequestParam
     public static void main(String[] args) {
 
         System.out.println("hello");
