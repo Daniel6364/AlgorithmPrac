@@ -1,6 +1,8 @@
 package kr.co.programmers.skillCheckTest.level2;
 
 
+import java.util.Arrays;
+
 /*
 * 문제1
 0 / (50.0)
@@ -28,14 +30,35 @@ n	left	right	result
 * */
 public class QuestionTwo3 {
 
-    public int[] solution(int n, long left, long right) {
+    public static int[] solution(int n, long left, long right) {
         int[] answer = {};
+
+
+        int[][] tmpArr = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+
+                tmpArr[i][j] = j;
+
+            }
+        }
+
+        for (int i = 0; i < tmpArr.length; i++) {
+            System.out.println(Arrays.toString(tmpArr[i]));
+
+        }
+
+
         return answer;
     }
 
     public static void main(String[] args) {
 
-        int n =
+        int n = 3;
+        long left = 2;
+        long right = 5;
+
+        solution(n, left, right);
 
     }
 
