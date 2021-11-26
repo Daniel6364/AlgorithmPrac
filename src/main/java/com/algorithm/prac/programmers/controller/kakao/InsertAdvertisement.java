@@ -12,6 +12,7 @@ import java.util.Locale;
 public class InsertAdvertisement {
 
 
+//    =======================// start
     public int timeToSec(String time) {
 
         int[] strTime = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
@@ -34,13 +35,54 @@ public class InsertAdvertisement {
         for (String log : logs) {
             System.out.println("log : " + log);
             String[] logSplit = log.split("-");
-            playCnt[timeToSec(logSplit[0])]++;
-            playCnt[timeToSec(logSplit[1])]--;
+//            playCnt[timeToSec(logSplit[0])]++;
+//            playCnt[timeToSec(logSplit[1])]--;
+
+            int s = timeToSec(logSplit[0]);
+            int e = timeToSec(logSplit[1]);
+            for (int i = s; i < e; i++) playCnt[i]++;
+
         }
 
+        System.out.println(Arrays.toString(playCnt));
+        System.out.println("==// 1. Arrays.toString(playCnt)");
+
+        long advMaxTime = playCnt[advTime - 1];
+        long advStartTime = 0;
+        for (int i = 0; i + advTime < playTime; i++) {
+            long tmp = playCnt[i + advTime] - playCnt[i];
+
+            if (tmp > advMaxTime) {
+                advMaxTime = tmp;
+                advStartTime = i + 1;
+            }
+        }
+
+        System.out.println(Arrays.toString(playCnt));
+        System.out.println("==// 2. Arrays.toString(playCnt)");
+
+        System.out.println("answer : " + answer);
 
         return answer;
     }
+//    =====================// end
+
+
+
+
+
+
+
+    public String solution2(String play_time, String adv_time, String[] logs) {
+
+        String answer = "";
+
+
+
+        return answer ;
+    }
+
+
 
     public static void main(String[] args) {
 
@@ -55,7 +97,8 @@ public class InsertAdvertisement {
         };
 
         InsertAdvertisement ia = new InsertAdvertisement();
-        System.out.println(ia.solution(play_time, adv_time, logs));
+//        System.out.println(ia.solution(play_time, adv_time, logs));
+        System.out.println(ia.solution2(play_time, adv_time, logs));
 
     }
 }
