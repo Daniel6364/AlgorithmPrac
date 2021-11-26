@@ -16,7 +16,7 @@ public class InsertAdvertisement {
 
         int[] strTime = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
         int result = strTime[0] * 60 * 60 + strTime[1] * 60 + strTime[2];
-
+        System.out.println("=====/ " + time + ": " + result);
         return result;
     }
 
@@ -27,16 +27,28 @@ public class InsertAdvertisement {
         int playTime = timeToSec(play_time);
         int advTime = timeToSec(adv_time);
 
-        System.out.println("playTime sec : " + playTime);
-        System.out.println("advTime sec : " + advTime);
-
         long[] playCnt = new long[playTime + 1];
         for (String log : logs) {
-            System.out.println("log : " + log);
+//            System.out.println("log : " + log);
             String[] logSplit = log.split("-");
-            playCnt[timeToSec(logSplit[0])]++;
-            playCnt[timeToSec(logSplit[1])]--;
+//            playCnt[timeToSec(logSplit[0])]++;
+//            playCnt[timeToSec(logSplit[1])]--;
+            int s = timeToSec(logSplit[0]);
+            int e = timeToSec(logSplit[1]);
+            for (int i = s; i < e; i++) playCnt[i]++;
         }
+
+        System.out.println("==// 2. Arrays.toString(playCnt)");
+        System.out.println(Arrays.toString(playCnt));
+
+        int startTime = 0;
+        int endTime = advTime;
+        long sum = 0;
+        for (int i = startTime; i < endTime; i++) {
+            sum += playCnt[i];
+        }
+
+        
 
 
         return answer;
