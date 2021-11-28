@@ -35,10 +35,18 @@ public class QuestionTwo3 {
 
 
         int[][] tmpArr = new int[n][n];
+
+        int num = 1;
+
         for (int i = 0; i < n; i++) {
+
             for (int j = 0; j < n; j++) {
 
-                tmpArr[i][j] = j;
+                if (j == i) {
+                    tmpArr[j][i] = i;
+
+                }
+
 
             }
         }
